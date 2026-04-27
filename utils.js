@@ -11,6 +11,7 @@ const dayjs = require('dayjs');
  */
 function getDiscountRate(product) {
   // 請實作此函式
+  return `${Math.round(product.price / product.origin_price * 10)}折`
 }
 
 /**
@@ -20,6 +21,11 @@ function getDiscountRate(product) {
  */
 function getAllCategories(products) {
   // 請實作此函式
+  let productArr = products.map(product => {
+    return product.category;
+  })
+
+  return [...new Set(productArr)];
 }
 
 /**
@@ -30,6 +36,7 @@ function getAllCategories(products) {
 function formatDate(timestamp) {
   // 請實作此函式
   // 提示：dayjs.unix...
+  return dayjs.unix(timestamp).format('YYYY/MM/DD HH:mm');
 }
 
 /**
@@ -43,6 +50,12 @@ function getDaysAgo(timestamp) {
   // 1. 用 dayjs() 取得今天
   // 2. 用 dayjs.unix(timestamp) 取得日期
   // 3. 用 .diff() 計算天數差異
+  const today = dayjs();
+  if(today.diff(dayjs.unix(timestamp),'day') === 0) {
+    return '今天';
+  }else {
+    return `${dayjs.unix(timestamp).diff(today,'day')} 天前`
+  }
 }
 
 /**
@@ -59,6 +72,24 @@ function getDaysAgo(timestamp) {
  */
 function validateOrderUser(data) {
   // 請實作此函式
+  let errors = [];
+  if (!data.name) {
+    errors.push('name: 不可為空');
+  }
+  if (!/^09\d{8}$/.test(data.tel)) {
+    errors.push('tel: 必須是 09 開頭的 10 位數字');
+  }
+  if (!data.email.includes('@')) {
+    errors.push('email: 必須包含 @ 符號');
+  }
+  if (!data.address) {
+    errors.push('address: 不可為空');
+  }
+  if(!['ATM', 'Credit Card', 'Apple Pay'].includes(data.payment)) {
+    errors.push("payment: 必須是 'ATM', 'Credit Card', 'Apple Pay' 其中之一");
+  }
+
+  return { isValid : errors.length == 0 , errors};
 }
 
 /**
@@ -73,6 +104,17 @@ function validateOrderUser(data) {
  */
 function validateCartQuantity(quantity) {
   // 請實作此函式
+  let error = [];
+  if (!Number.isInteger(quantity)) {
+    error.push('數量須為正整數');
+  }
+  if (quantity < 1) {
+    error.push('不可小於 1');
+  }
+  if (quantity > 99) {
+    error.push('不可大於 99');
+  }
+  return { isValid : error.length == 0 , error : error};
 }
 
 /**
@@ -92,6 +134,7 @@ function validateCartQuantity(quantity) {
  */
 function formatCurrency(amount) {
   // 請實作此函式
+  return `NT$ ${amount.toLocaleString()}`;
 }
 
 module.exports = {
