@@ -73,7 +73,7 @@ function getDaysAgo(timestamp) {
 function validateOrderUser(data) {
   // 請實作此函式
   let errors = [];
-  if (!data.name) {
+  if (!data.name || data.name.trim() === '') {
     errors.push('name: 不可為空');
   }
   if (!/^09\d{8}$/.test(data.tel)) {
@@ -82,7 +82,7 @@ function validateOrderUser(data) {
   if (!data.email.includes('@')) {
     errors.push('email: 必須包含 @ 符號');
   }
-  if (!data.address) {
+  if (!data.address || data.address.trim() == '') {
     errors.push('address: 不可為空');
   }
   if(!['ATM', 'Credit Card', 'Apple Pay'].includes(data.payment)) {
@@ -106,15 +106,19 @@ function validateCartQuantity(quantity) {
   // 請實作此函式
   let error = [];
   if (!Number.isInteger(quantity)) {
-    error.push('數量須為正整數');
+    return { isValid : error.length == 0 , error : '數量須為正整數'};
+    // error.push('數量須為正整數');
   }
   if (quantity < 1) {
-    error.push('不可小於 1');
+    return { isValid : error.length == 0 , error : '不可小於 1'};
+    // error.push('不可小於 1');
   }
   if (quantity > 99) {
-    error.push('不可大於 99');
+    return { isValid : error.length == 0 , error : '不可大於 99'};
+    // error.push('不可大於 99');
   }
-  return { isValid : error.length == 0 , error : error};
+  return { isValid : true , error : ''};
+  // return { isValid : error.length == 0 , error : error};
 }
 
 /**

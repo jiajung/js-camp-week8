@@ -13,7 +13,7 @@ async function getCart() {
   // 請實作此函式
   // 提示：呼叫 fetchCart() 取得購物車資料並回傳
   const res = await fetchCart();
-  return res;
+  return res.carts;
 }
 
 /**
@@ -120,19 +120,20 @@ function displayCart(cart) {
   // ----------------------------------------
   // 商品總計：NT$ 1,600
   // 折扣後金額：NT$ 1,600
-  const data = getCart();
-  if (data.carts.length === 0) {
+  if (!cart.carts || cart.carts.length === 0) {
     return '購物車是空的';
   }else {
-    return data.carts.map(item => {
-      return {
-        '產品名稱' : item.title,
-        '數量' : item.quantity,
-        '單價' : formatCurrency(item.price),
-        '小計' : formatCurrency(Math.round(item.quantity * item.price)),
-        '商品總計' : formatCurrency(item.total),
-        '折扣後金額' : formatCurrency(item.finalTotal),
-      }
+    let count = 1;
+    console.log('購物車內容');
+    console.log('----------------------------------------');
+    cart.carts.map(item => {
+      console.log(`${count} : ${item.title}`);
+      console.log(`數量 : ${item.quantity}`);
+      console.log(`單價 : ${formatCurrency(item.price)}`);
+      console.log(`小計 : ${formatCurrency(Math.round(item.quantity * item.price))}`);
+      console.log('----------------------------------------');
+      console.log(`商品總計 : ${formatCurrency(item.total)}`);
+      console.log(`折扣後金額 : ${formatCurrency(item.finalTotal)}`);
     })
   }
 }

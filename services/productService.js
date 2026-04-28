@@ -74,12 +74,15 @@ function displayProducts(products) {
   //    原價：NT$ 1,000
   //    售價：NT$ 800 (8折)
   // ----------------------------------------
-  return products.map(p => {
-    return {
-      '分類' : p.title,
-      '原價' : formatCurrency(p.origin_price),
-      '售價' : `${formatCurrency(p.price)}  ${getDiscountRate(p)}`,
-    }
+  let count = 1;
+  console.log('----------------------------------------');
+  products.map(p => {
+    console.log(`${count}. ${p.title}`);
+    console.log(`    分類 : ${p.category}`);
+    console.log(`    原價 : ${formatCurrency(p.origin_price)}`);
+    console.log(`    售價 : ${formatCurrency(p.price)}  ${getDiscountRate(p)}`);
+    console.log('----------------------------------------');
+    count++;
   })
 }
 
