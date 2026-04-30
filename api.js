@@ -70,11 +70,7 @@ async function updateCartItem(cartId, quantity) {
  */
 async function deleteCartItem(cartId) {
   // 請實作此函式
-  const res = await axios.delete(`${BASE_URL}/api/livejs/v1/customer/${API_PATH}/carts/`,{
-    data : {
-      id : cartId,
-    }
-  })
+  const res = await axios.delete(`${BASE_URL}/api/livejs/v1/customer/${API_PATH}/carts/${cartId}`)
   
   return res.data;
 }
@@ -157,10 +153,7 @@ async function updateOrderStatus(orderId, isPaid) {
  */
 async function deleteOrder(orderId) {
   // 請實作此函式
-  const res = await axios.delete(`${BASE_URL}/api/livejs/v1/admin/${API_PATH}/orders`,{
-    data : {
-        id : orderId,
-    },
+  const res = await axios.delete(`${BASE_URL}/api/livejs/v1/admin/${API_PATH}/orders/${orderId}`,{
     headers: {
       authorization: ADMIN_TOKEN
     }

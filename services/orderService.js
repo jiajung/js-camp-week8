@@ -18,9 +18,12 @@ async function placeOrder(userInfo) {
   const isValid = validateOrderUser(userInfo);
   if (!isValid.isValid) {
     return { success: false, errors: isValid.errors };
-  }else {
+  }
+  try {
     const res = await createOrder(userInfo);
     return { success: true, data: res.data };
+  }catch(e) {
+    return { success: false, errors:e.message };
   }
 }
 
@@ -71,11 +74,12 @@ async function updatePaymentStatus(orderId, isPaid) {
   // 請實作此函式
   // 提示：呼叫 updateOrderStatus()
   // 回傳格式：{ success: true, data: ... } / { success: false, error: ... }
-  const res = await updateOrderStatus(orderId, isPaid);
+  
   try {
-    return { success: true, data: res };
+    const data = await updateOrderStatus(orderId, isPaid);
+    return { success: true, data };
   }catch(e) {
-    return { success: false, data: e.message };
+    return { success: false, error: e.message };
   }
 }
 
@@ -89,10 +93,10 @@ async function removeOrder(orderId) {
   // 提示：呼叫 deleteOrder()
   // 回傳格式：{ success: true, data: ... } / { success: false, error: ... }
   try {
-    const res = await deleteOrder(orderId);
-    return { success: true, data: res };
+    const data = await deleteOrder(orderId);
+    return { success: true, data };
   }catch(e) {
-    return { success: false, data: e.message };
+    return { success: false, error: e.message };
   }
 }
 
@@ -154,17 +158,21 @@ function displayOrders(orders) {
   // 商品明細：
   //   - 產品名稱 x 2（產品數量）
   // ========================================
+  if (!orders || orders.length === 0) {
+    console.log('沒有訂單');
+    return ;
+  }
   orders.forEach(order => {
     let formatedOrder = formatOrder(order);
     console.log('========================================');
-    console.log(`訂單編號：${order.id}`);
-    console.log(`顧客姓名：${order.user.name}`);
-    console.log(`聯絡電話：${order.user.tel}`);
-    console.log(`寄送地址：${order.user.address}`);
-    console.log(`付款方式：${order.user.payment}`);
-    console.log(`訂單金額：${order.total}`);
-    console.log(`付款狀態：${order.paidText}`);
-    console.log(`建立時間：${order.createdAt} (${order.daysAgo})`);
+    console.log(`訂單編號：${formatedOrder.id}`);
+    console.log(`顧客姓名：${formatedOrder.user.name}`);
+    console.log(`聯絡電話：${formatedOrder.user.tel}`);
+    console.log(`寄送地址：${formatedOrder.user.address}`);
+    console.log(`付款方式：${formatedOrder.user.payment}`);
+    console.log(`訂單金額：${formatedOrder.total}`);
+    console.log(`付款狀態：${formatedOrder.paidText}`);
+    console.log(`建立時間：${formatedOrder.createdAt} (${formatedOrder.daysAgo})`);
     console.log('----------------------------------------');
     console.log(`商品明細：：${order.user.name}`);
     order.products.forEach(product => {

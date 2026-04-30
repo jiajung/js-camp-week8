@@ -13,7 +13,7 @@ async function getCart() {
   // 請實作此函式
   // 提示：呼叫 fetchCart() 取得購物車資料並回傳
   const res = await fetchCart();
-  return res.carts;
+  return res;
 }
 
 /**
@@ -30,10 +30,15 @@ async function addProductToCart(productId, quantity) {
   const isValid = validateCartQuantity(quantity);
   if (!isValid.isValid) {
     return { success: false, error: isValid.error };
-  }else {
+  }
+  try {
     const data = await addToCart(productId, quantity);
     return { success: true, data : data };
+  }catch(e){
+    return { success: false, error: e.message };
   }
+    
+  
 }
 
 /**
@@ -70,8 +75,8 @@ async function removeProduct(cartId) {
   // 提示：呼叫 deleteCartItem()
   // 回傳格式：{ success: true, data: ... } / { success: false, error: ... }
   try {
-    const res = await deleteCartItem(cartId);
-    return { success: true, data: res };
+    const data = await deleteCartItem(cartId);
+    return { success: true, data };
   }catch (e) {
     return { success: false, error: e.message };
   }
@@ -85,8 +90,13 @@ async function emptyCart() {
   // 請實作此函式
   // 提示：呼叫 clearCart()
   // 回傳格式：{ success: true, data: ... } 
-  const res = await clearCart();
-  return { success: true, data: res };
+  try{
+    const res = await clearCart();
+    return { success: true, data: res };
+  }catch(e) {
+    return { success: false, data: e.message };
+  }
+  
 }
 
 /**
@@ -121,20 +131,22 @@ function displayCart(cart) {
   // 商品總計：NT$ 1,600
   // 折扣後金額：NT$ 1,600
   if (!cart.carts || cart.carts.length === 0) {
-    return '購物車是空的';
+    console.log('購物車是空的');
+    return;
   }else {
     let count = 1;
     console.log('購物車內容');
     console.log('----------------------------------------');
-    cart.carts.map(item => {
+    cart.carts.forEach(item => {
       console.log(`${count} : ${item.title}`);
       console.log(`數量 : ${item.quantity}`);
-      console.log(`單價 : ${formatCurrency(item.price)}`);
-      console.log(`小計 : ${formatCurrency(Math.round(item.quantity * item.price))}`);
+      console.log(`單價 : ${formatCurrency(item.product.price)}`);
+      console.log(`小計 : ${formatCurrency(Math.round(item.quantity * item.product.price))}`);
+      count++;
       console.log('----------------------------------------');
-      console.log(`商品總計 : ${formatCurrency(item.total)}`);
-      console.log(`折扣後金額 : ${formatCurrency(item.finalTotal)}`);
     })
+    console.log(`商品總計 : ${formatCurrency(cart.total)}`);
+    console.log(`折扣後金額 : ${formatCurrency(cart.finalTotal)}`);
   }
 }
 

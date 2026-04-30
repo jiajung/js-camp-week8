@@ -76,11 +76,11 @@ function displayProducts(products) {
   // ----------------------------------------
   let count = 1;
   console.log('----------------------------------------');
-  products.map(p => {
+  products.forEach(p => {
     console.log(`${count}. ${p.title}`);
     console.log(`    分類 : ${p.category}`);
     console.log(`    原價 : ${formatCurrency(p.origin_price)}`);
-    console.log(`    售價 : ${formatCurrency(p.price)}  ${getDiscountRate(p)}`);
+    console.log(`    售價 : ${formatCurrency(p.price)}  (${getDiscountRate(p)})`);
     console.log('----------------------------------------');
     count++;
   })
