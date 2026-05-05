@@ -60,7 +60,7 @@ async function updateProduct(cartId, quantity) {
       const data = await updateCartItem(cartId, quantity);
       return { success: true, data };
     }catch (e) {
-      return { success: true, error : e.message}
+      return { success: false, error : e.message}
     }
   }
 }
@@ -94,7 +94,7 @@ async function emptyCart() {
     const res = await clearCart();
     return { success: true, data: res };
   }catch(e) {
-    return { success: false, data: e.message };
+    return { success: false, error: e.message };
   }
   
 }

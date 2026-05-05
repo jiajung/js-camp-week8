@@ -170,11 +170,11 @@ function displayOrders(orders) {
     console.log(`聯絡電話：${formatedOrder.user.tel}`);
     console.log(`寄送地址：${formatedOrder.user.address}`);
     console.log(`付款方式：${formatedOrder.user.payment}`);
-    console.log(`訂單金額：${formatedOrder.total}`);
+    console.log(`訂單金額：${formatedOrder.totalFormatted}`);
     console.log(`付款狀態：${formatedOrder.paidText}`);
     console.log(`建立時間：${formatedOrder.createdAt} (${formatedOrder.daysAgo})`);
     console.log('----------------------------------------');
-    console.log(`商品明細：：${order.user.name}`);
+    console.log(`商品明細：`);
     order.products.forEach(product => {
       console.log(`- ${product.title} x ${product.quantity}`);
     })

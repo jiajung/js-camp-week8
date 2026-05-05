@@ -83,7 +83,7 @@ function validateOrderUser(data) {
   if (!data.email.includes('@')) {
     errors.push('email: 必須包含 @ 符號');
   }
-  if (!data.address || data.address.trim() == '') {
+  if (!data.address || data.address.trim() === '') {
     errors.push('address: 不可為空');
   }
   if(!['ATM', 'Credit Card', 'Apple Pay'].includes(data.payment)) {
@@ -118,7 +118,7 @@ function validateCartQuantity(quantity) {
     return { isValid : false , error : '不可大於 99'};
     // error.push('不可大於 99');
   }
-  return { isValid : true , error : ''};
+  return { isValid : true};
   // return { isValid : error.length == 0 , error : error};
 }
 

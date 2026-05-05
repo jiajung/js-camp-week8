@@ -98,7 +98,7 @@ async function createOrder(userInfo) {
       user : userInfo,
     }
   })
-  return res;
+  return res.data;
 }
 
 // ========== 管理員 API ==========
